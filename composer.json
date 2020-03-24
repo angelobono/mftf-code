@@ -1,0 +1,24 @@
+{
+    "name": "angelobono/mftf-code",
+    "description": "Magento Framework Testing Framework - Testgeneration",
+    "type": "project",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Angelo Bono",
+            "email": "mail@angelobono.de"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Bono\\MftfCode\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bono\\MftfCode\\Test\\": "Test"
+        }
+    }
+}

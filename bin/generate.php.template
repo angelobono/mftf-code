@@ -1,0 +1,43 @@
+<?php
+/**
+ * @Author: Angelo Bono
+ * @Date:   2020-03-23 22:20:24
+ * @Last Modified by:   Angelo Bono
+ * @Last Modified time: 2020-03-24 05:13:39
+ */
+declare(strict_types=1);
+
+chdir(dirname(__DIR__));
+
+include __DIR__ . '/../vendor/autoload.php';
+
+use Bono\MftfCode\Generator;
+use Bono\Blog\Api\Data\BlogPostInterface;
+
+$typeName = 'BlogPost';
+$typeClassName = BlogPostInterface::class;
+$moduleTestDirectoryPath = 'app/code/Bono/Blog/Test';
+$moduleMftfDirectoryPath = $moduleTestDirectoryPath . '/Mftf';
+
+@mkdir($moduleTestDirectoryPath);
+@mkdir($moduleMftfDirectoryPath);
+@mkdir($moduleMftfDirectoryPath . '/Data');
+$generator = Generator\DataGenerator::fromDTO($typeClassName);
+$generator->render()->toFile($moduleMftfDirectoryPath . '/Data/' . $typeName . 'Data.xml');
+
+@mkdir($moduleMftfDirectoryPath . '/Page');
+$generator = Generator\PageGenerator::from(
+    'Bono_Blog',
+    'Admin' . $typeName . 'Grid',
+    '/blog/index',
+    'admin'
+);
+$generator->render()->toFile($moduleMftfDirectoryPath . '/Page/Admin' . $typeName . 'GridPage.xml');
+
+@mkdir($moduleMftfDirectoryPath . '/Section');
+$generator = Generator\SectionGenerator::fromDTO($typeClassName, 'Grid', true);
+$generator->render()->toFile($moduleMftfDirectoryPath . '/Section/Admin' . $typeName . 'GridSection.xml');
+
+@mkdir($moduleMftfDirectoryPath . '/Test');
+$generator = Generator\TestGenerator::fromDTO($typeClassName, true, '71192');
+$generator->render()->toFile($moduleMftfDirectoryPath . '/Test/Admin' . $typeName . 'Test.xml');

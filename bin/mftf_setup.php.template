@@ -1,0 +1,26 @@
+<?php
+
+shell_exec('composer require magento/magento2-functional-testing-framework --dev');
+
+shell_exec('bin/magento config:set cms/wysiwyg/enabled disabled');
+shell_exec('bin/magento config:set admin/security/admin_account_sharing 1');
+shell_exec('bin/magento config:set admin/security/use_form_key 0');
+shell_exec('bin/magento cache:clean config full_page');
+
+shell_exec('vendor/bin/mftf build:project');
+shell_exec('vendor/bin/mftf generate:urn-catalog --force .idea/');
+
+file_put_contents(
+    'dev/tests/acceptance/.env',
+    'MAGENTO_BASE_URL=' . shell_exec('bin/magento config:show web/unsecure/base_url') . PHP_EOL .
+    'MAGENTO_BACKEND_NAME=admin' . PHP_EOL .
+    'MAGENTO_ADMIN_USERNAME=admin' . PHP_EOL .
+    'MAGENTO_ADMIN_PASSWORD=admin123'
+);
+
+shell_exec('cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess');
+shell_exec('npm install selenium-standalone@latest -g');
+shell_exec('nohup selenium-standalone install && selenium-standalone start &');
+
+shell_exec('composer require symfony/service-contracts --dev');
+shell_exec('composer require symfony/http-foundation:^4.4 --dev');
