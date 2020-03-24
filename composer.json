@@ -1,6 +1,6 @@
 {
     "name": "angelobono/mftf-code",
-    "description": "Magento Framework Testing Framework - Testgeneration",
+    "description": "Magento Functional Testing Framework - Testgeneration",
     "type": "project",
     "license": "GPL-3.0",
     "authors": [
